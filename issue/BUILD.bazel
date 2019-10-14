@@ -1,0 +1,20 @@
+
+load("//issue:rule.bzl", "gen_srcjar")
+load("@io_bazel_rules_scala//scala:scala.bzl", "scala_library")
+
+gen_srcjar(
+    name = "gen",
+    file = "some/Generated.scala",
+    content =
+"""
+package some
+object Generated {
+    val value = 1;
+}
+"""
+)
+
+scala_library(
+    name = "usage",
+    srcs = ["Usage.scala", ":gen"]
+)
